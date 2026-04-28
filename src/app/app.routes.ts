@@ -6,6 +6,15 @@ export const routes: Routes = [
     loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
   },
   {
+    path: 'pag2',
+    loadComponent: () => import('./pag2/pag2.page').then( m => m.Pag2Page)
+  },
+  // ESTA É A LINHA QUE ESTÁ FALTANDO:
+  {
+    path: 'configuracoes',
+    loadComponent: () => import('./configuracoes/configuracoes.page').then( m => m.ConfiguracoesPage)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',

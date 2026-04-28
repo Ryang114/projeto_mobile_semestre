@@ -1,0 +1,28 @@
+
+    <ion-title>Editar alarme</ion-title>
+  
+
+<ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-item>
+      <ion-input 
+      label="Nome do alarme"
+      label-placement="stacked"
+      placeholder="Ex: Academia, Escola..."
+      [(ngModel)]="alarmName">
+    </ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-item>
+    <ion-datetime
+      presentation="time"
+      prefer-wheel="tue"
+      [(ngModel)]="alarmTime">
+    </ion-datetime>
+  </ion-item>
+
+  <ion-button expand="block" (click)="salvarAlarme()">
+    Salvar Alarme
+  </ion-button>
+</ion-content>
