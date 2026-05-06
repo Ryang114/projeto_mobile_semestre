@@ -1,0 +1,58 @@
+<ion-content>
+    <ion-card class="filtro">
+        <div>
+            <ion-button id="click-trigger">
+                <ion-icon slot="start" name="options-outline"></ion-icon>
+                ordernar por
+            </ion-button>
+
+            <ion-popover trigger="click-trigger" trigger-action="click">
+                <ng-template>
+                    <ion-list>
+                        <ion-item button (click)="ordenar ('ligados')">
+                            <ion-label>Ligados</ion-label>
+                        </ion-item>
+
+                        <ion-item button (click)="ordenar ('crescente')">
+                            <ion-label>Ordem crescente</ion-label>
+                        </ion-item>
+
+                        <ion-item button (click)="ordenar ('decrescente')">
+                            <ion-label>Ordem decrescente</ion-label>
+                        </ion-item>
+                    </ion-list>
+                </ng-template>
+            </ion-popover>
+        </div>
+
+    </ion-card>
+
+    <ion-title>Nenhum alarme criado</ion-title>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+
+        <ion-fab-button>
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+
+    </ion-fab>
+
+</ion-content>
+
+<ion-footer>
+    <ion-tab-bar slot="bottom">
+
+        <ion-tab-button tab="sleep">
+            <ion-icon name="moon-outline"></ion-icon>
+        </ion-tab-button>
+
+        <ion-tab-button routerLink="/home" class="active-item">
+            <ion-icon name="alarm"></ion-icon>
+        </ion-tab-button>
+
+        <ion-tab-button routerLink="/configuracoes">
+            <ion-icon name="settings-outline"></ion-icon>
+        </ion-tab-button>
+
+    </ion-tab-bar>
+</ion-footer>

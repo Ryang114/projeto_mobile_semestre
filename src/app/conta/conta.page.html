@@ -1,0 +1,89 @@
+<ion-content>
+
+  <!-- Botão voltar -->
+  <div class="header-back">
+    <ion-button fill="clear" (click)="voltar()">
+      <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <div class="auth-container">
+
+    <!-- Abas -->
+    <div class="tabs">
+      <div class="tab-btn" [class.active]="abaAtiva === 'entrar'" (click)="trocarAba('entrar')">
+        Entrar
+      </div>
+      <div class="tab-btn" [class.active]="abaAtiva === 'criar'" (click)="trocarAba('criar')">
+        Criar conta
+      </div>
+    </div>
+
+    <!-- LOGIN -->
+    <div *ngIf="abaAtiva === 'entrar'" class="form-content">
+
+      <div class="input-group">
+        <ion-icon name="mail-outline" [class.active-icon]="emailLogin.length > 0"></ion-icon>
+        <input type="email" placeholder="Email" [(ngModel)]="emailLogin">
+      </div>
+      <p class="error-msg" *ngIf="erroEmail">{{ erroEmail }}</p>
+
+      <div class="input-group">
+        <ion-icon name="key-outline" [class.active-icon]="senhaLogin.length > 0"></ion-icon>
+        <input [type]="mostrarSenha ? 'text' : 'password'" placeholder="Senha" [(ngModel)]="senhaLogin">
+        <ion-icon class="eye-icon"
+          [name]="mostrarSenha ? 'eye-off-outline' : 'eye-outline'"
+          (click)="alternarVisibilidadeSenha('senha')">
+        </ion-icon>
+      </div>
+      <p class="error-msg" *ngIf="erroSenha">{{ erroSenha }}</p>
+
+      <button class="btn-submit" (click)="entrar()">Entrar</button>
+    </div>
+
+    <!-- CRIAR CONTA -->
+    <div *ngIf="abaAtiva === 'criar'" class="form-content">
+
+      <div class="input-group">
+        <ion-icon name="mail-outline" [class.active-icon]="emailCriar.length > 0"></ion-icon>
+        <input type="email" placeholder="Email" [(ngModel)]="emailCriar">
+      </div>
+      <p class="error-msg" *ngIf="erroEmail">{{ erroEmail }}</p>
+
+      <div class="input-group">
+        <ion-icon name="key-outline" [class.active-icon]="senhaCriar.length > 0"></ion-icon>
+        <input [type]="mostrarSenha ? 'text' : 'password'" placeholder="Senha" [(ngModel)]="senhaCriar">
+        <ion-icon class="eye-icon"
+          [name]="mostrarSenha ? 'eye-off-outline' : 'eye-outline'"
+          (click)="alternarVisibilidadeSenha('senha')">
+        </ion-icon>
+      </div>
+      <p class="error-msg" *ngIf="erroSenha">{{ erroSenha }}</p>
+
+      <div class="input-group">
+        <ion-icon name="key-outline" [class.active-icon]="confirmarSenhaCriar.length > 0"></ion-icon>
+        <input [type]="mostrarConfirmarSenha ? 'text' : 'password'" placeholder="Confirmar Senha" [(ngModel)]="confirmarSenhaCriar">
+        <ion-icon class="eye-icon"
+          [name]="mostrarConfirmarSenha ? 'eye-off-outline' : 'eye-outline'"
+          (click)="alternarVisibilidadeSenha('confirmar')">
+        </ion-icon>
+      </div>
+      <p class="error-msg" *ngIf="erroConfirmar">{{ erroConfirmar }}</p>
+
+      <button class="btn-submit" (click)="criarConta()">Criar conta</button>
+    </div>
+
+  </div>
+
+  <!-- POPUP -->
+  <div class="popup-overlay" *ngIf="mostrarPopupSucesso">
+    <div class="popup-box">
+      <div class="popup-content">
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+        <span>Sucesso!</span>
+      </div>
+      <button class="btn-popup" (click)="irParaEntrar()">Ir para Login</button>
+    </div>
+  </div>
+
+</ion-content>
