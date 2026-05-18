@@ -1,0 +1,44 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="transparent-header">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/sobre-nos" color="light"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="content-container">
+    
+    <div class="perfil-layout">
+      <div class="individual-photo">
+        <img [src]="fotoDev" alt="Foto do Dev">
+      </div>
+
+      <div class="info-layout">
+        <h2 class="dev-name">{{ nomeDev }}</h2>
+        <div class="contact-icons">
+          <ion-icon name="mail-outline" class="contact-icon"></ion-icon>
+          
+          <ion-icon 
+            name="logo-github" 
+            class="contact-icon github-click" 
+            *ngIf="mostrarGithub"
+            (click)="abrirGithub()">
+          </ion-icon>
+
+          <div class="ra-placeholder" *ngIf="mostrarRa">RA</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="function-button-container">
+      <div class="custom-chip">{{ funcaoDev }}</div>
+    </div>
+
+    <div class="nota-container">
+      <h3>Nota do dev</h3>
+      <div class="nota-box">{{ notaDev }}</div>
+    </div>
+
+  </div>
+</ion-content>

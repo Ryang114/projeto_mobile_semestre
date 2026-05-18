@@ -1,161 +1,135 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { addIcons } from 'ionicons';
-import {
-  chevronBackOutline,
-  mailOutline,
-  keyOutline,
-  eyeOutline,
-  eyeOffOutline,
-  checkmarkCircleOutline
-} from 'ionicons/icons';
-import { IonContent, IonButton, IonIcon, NavController } from '@ionic/angular/standalone';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { IonicModule } from '@ionic/angular'; 
+import { FormsModule } from '@angular/forms';  
+import { CommonModule } from '@angular/common'; 
 
 @Component({
   selector: 'app-conta',
   templateUrl: './conta.page.html',
   styleUrls: ['./conta.page.scss'],
-  standalone: true,
-  imports: [IonContent, IonButton, IonIcon, CommonModule, FormsModule]
+  standalone: true, 
+  imports: [IonicModule, FormsModule, CommonModule] 
 })
-export class ContaPage implements OnInit {
+export class ContaPage {
+  // Controle de Abas e Visibilidade de Senha
   abaAtiva: 'entrar' | 'criar' = 'entrar';
+  mostrarSenha = false;
+  mostrarConfirmarSenha = false;
+  mostrarPopupSucesso = false;
 
+  // Inputs da aba LOGIN
   emailLogin = '';
   senhaLogin = '';
 
+  // Inputs da aba CRIAR CONTA
   emailCriar = '';
   senhaCriar = '';
   confirmarSenhaCriar = '';
 
-  mostrarSenha = false;
-  mostrarConfirmarSenha = false;
-
+  // Mensagens de Erro
   erroEmail = '';
   erroSenha = '';
   erroConfirmar = '';
 
-  mostrarPopupSucesso = false;
+  constructor(private router: Router) {}
 
-  constructor(private navCtrl: NavController) {
-    addIcons({
-      'chevron-back-outline': chevronBackOutline,
-      'mail-outline': mailOutline,
-      'key-outline': keyOutline,
-      'eye-outline': eyeOutline,
-      'eye-off-outline': eyeOffOutline,
-      'checkmark-circle-outline': checkmarkCircleOutline
-    });
-  }
-
-  ngOnInit() {
-    const usuarioLogado = localStorage.getItem('usuarioLogado');
-    if (usuarioLogado === 'true') {
-      this.navCtrl.navigateRoot('/conta_logada');
-    }
-  }
-
-  voltar() {
-    this.navCtrl.navigateBack('/configuracoes', { animated: false });
-  }
-
+  // Alterna entre as abas 'entrar' e 'criar' e limpa os erros
   trocarAba(aba: 'entrar' | 'criar') {
     this.abaAtiva = aba;
     this.limparErros();
   }
 
-  limparErros() {
+  // Mostra/Esconde as senhas nos inputs
+  alternarVisibilidadeSenha(tipo: 'senha' | 'confirmar') {
+    if (tipo === 'senha') {
+      this.mostrarSenha = !this.mostrarSenha;
+    } else if (tipo === 'confirmar') {
+      this.mostrarConfirmarSenha = !this.mostrarConfirmarSenha;
+    }
+  }
+
+  // Lógica de Criar Conta (Cadastro)
+  criarConta() {
+    this.limparErros();
+
+    // 1. Validações básicas
+    if (!this.emailCriar.includes('@')) {
+      this.erroEmail = 'Insira um e-mail válido.';
+      return;
+    }
+    if (this.senhaCriar.length < 6) {
+      this.erroSenha = 'A senha deve ter pelo menos 6 caracteres.';
+      return;
+    }
+    if (this.senhaCriar !== this.confirmarSenhaCriar) {
+      this.erroConfirmar = 'As senhas não coincidem.';
+      return;
+    }
+
+    // 2. Salva os dados localmente
+    const novoUsuario = {
+      email: this.emailCriar,
+      senha: this.senhaCriar
+    };
+    
+    localStorage.setItem('usuarioLocal', JSON.stringify(novoUsuario));
+
+    // 3. Abre o seu popup customizado do HTML
+    this.mostrarPopupSucesso = true;
+  }
+
+  // Lógica de Entrar (Login)
+  entrar() {
+    this.limparErros();
+
+    // Busca o usuário que foi cadastrado no localStorage
+    const usuarioSalvo = localStorage.getItem('usuarioLocal');
+
+    if (!usuarioSalvo) {
+      this.erroEmail = 'Nenhum usuário cadastrado neste dispositivo.';
+      return;
+    }
+
+    const conta = JSON.parse(usuarioSalvo);
+
+    // Valida as credenciais
+    if (this.emailLogin !== conta.email) {
+      this.erroEmail = 'E-mail não encontrado.';
+      return;
+    }
+
+    if (this.senhaLogin !== conta.senha) {
+      this.erroSenha = 'Senha incorreta.';
+      return;
+    }
+
+    // Se passou por tudo, faz o login e vai para a home do alarme
+    this.router.navigate(['/home']); 
+  }
+
+  // Função do botão do seu Popup de Sucesso
+  irParaEntrar() {
+    this.mostrarPopupSucesso = false;
+    this.limparCamposCadastro();
+    this.trocarAba('entrar'); // Te joga para a aba de login
+  }
+
+  // Botão voltar do topo da tela
+  voltar() {
+    // Ajuste para a rota anterior do seu app se necessário (ex: /welcome ou /home)
+    this.router.navigate(['/home']); 
+  }
+
+  // Auxiliares para limpar o estado da tela
+  private limparErros() {
     this.erroEmail = '';
     this.erroSenha = '';
     this.erroConfirmar = '';
   }
 
-  alternarVisibilidadeSenha(tipo: 'senha' | 'confirmar') {
-    if (tipo === 'senha') {
-      this.mostrarSenha = !this.mostrarSenha;
-    } else {
-      this.mostrarConfirmarSenha = !this.mostrarConfirmarSenha;
-    }
-  }
-
-  entrar() {
-    this.limparErros();
-    let temErro = false;
-
-    if (!this.emailLogin) {
-      this.erroEmail = 'Email incorreto';
-      temErro = true;
-    }
-    if (!this.senhaLogin) {
-      this.erroSenha = 'Senha incorreta';
-      temErro = true;
-    }
-
-    if (temErro) return;
-
-    const contaSalvaString = localStorage.getItem('contaApp');
-    if (contaSalvaString) {
-      const contaSalva = JSON.parse(contaSalvaString);
-      // Compara credenciais
-      if (this.emailLogin.toLowerCase() === contaSalva.email.toLowerCase() && this.senhaLogin === contaSalva.senha) {
-        localStorage.setItem('usuarioLogado', 'true');
-        this.navCtrl.navigateRoot('/home', { animated: false });
-      } else {
-        this.erroEmail = 'Email incorreto';
-        this.erroSenha = 'Senha incorreta';
-      }
-    } else {
-      this.erroEmail = 'Email incorreto';
-      this.erroSenha = 'Senha incorreta';
-    }
-  }
-
-  criarConta() {
-    this.limparErros();
-    let temErro = false;
-
-    // 1. Validação de formato básico
-    if (!this.emailCriar || !this.emailCriar.includes('@')) {
-      this.erroEmail = 'Formato de email inválido';
-      temErro = true;
-    } else {
-
-      const contaExistenteString = localStorage.getItem('contaApp');
-      if (contaExistenteString) {
-        const contaExistente = JSON.parse(contaExistenteString);
-
-        if (this.emailCriar.toLowerCase() === contaExistente.email.toLowerCase()) {
-          this.erroEmail = 'Este email já está cadastrado';
-          temErro = true;
-        }
-      }
-    }
-
-
-    if (!this.senhaCriar || this.senhaCriar.length < 3 || this.senhaCriar.length > 150) {
-      this.erroSenha = 'A senha deve ter mais de 3 caracteres';
-      temErro = true;
-    }
-
-
-    if (this.senhaCriar !== this.confirmarSenhaCriar) {
-      this.erroConfirmar = 'As senhas não coincidem';
-      temErro = true;
-    }
-
-    if (temErro) return;
-
-    const novaConta = { email: this.emailCriar, senha: this.senhaCriar };
-    localStorage.setItem('contaApp', JSON.stringify(novaConta));
-
-    this.mostrarPopupSucesso = true;
-  }
-
-  irParaEntrar() {
-    this.mostrarPopupSucesso = false;
-    this.abaAtiva = 'entrar';
-    this.emailLogin = this.emailCriar;
+  private limparCamposCadastro() {
+    this.emailCriar = '';
     this.senhaCriar = '';
     this.confirmarSenhaCriar = '';
   }

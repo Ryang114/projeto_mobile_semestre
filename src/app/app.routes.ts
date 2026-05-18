@@ -22,4 +22,12 @@ export const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full',
   },
+  {
+    path: 'sobre-nos',
+    loadComponent: () => import('./sobre-nos/sobre-nos.page').then( m => m.SobreNosPage)
+  },
+  {
+    path: 'perfil-dev/:idDev', 
+    loadComponent: () => import('./perfil-dev/perfil-dev.page').then( m => m.PerfilDevPage)
+  },
 ];
