@@ -1,0 +1,56 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="transparent-header">
+    <ion-buttons slot="start">
+  <ion-back-button 
+    defaultHref="/configuracoes" 
+    icon="arrow-back-outline">
+  </ion-back-button>
+</ion-buttons>
+    <ion-title class="centered-title">Desenvolvedores</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="content-container"> 
+    
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6">
+          <ion-card class="dev-card" (click)="abrirPerfil('adriano')">
+            <div class="image-placeholder">
+              <img src="assets/imagens/Adriano.jpeg" alt="Adriano">
+            </div>
+            <ion-card-content class="name-bar">
+              Adriano Feliciano
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size="6">
+          <ion-card class="dev-card" (click)="abrirPerfil('ryan')">
+            <div class="image-placeholder">
+              <img src="assets/imagens/ryan.jpeg" alt="Ryan">
+            </div>
+            <ion-card-content class="name-bar">
+              Ryan Gomes
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="6" class="pablo-col">
+          <ion-card class="dev-card" (click)="abrirPerfil('pablo')">
+            <div class="image-placeholder">
+              <img src="assets/imagens/pablo.jpeg" alt="Pablo">
+            </div>
+            <ion-card-content class="name-bar">
+              Pablo Vinicius
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </div>
+</ion-content>
