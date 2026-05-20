@@ -1,0 +1,60 @@
+<ion-content>
+  <div class="topo-home-container">
+      <div class="perfil-logado-container" [formGroup]="perfilForm">
+          <div class="avatar-circulo">
+              <ion-icon name="person-circle-outline"></ion-icon>
+          </div>
+          <p class="user-email">{{ perfilForm.get('email')?.value }}</p>
+      </div>
+
+      <div class="filtro-direita">
+          <ion-button id="click-trigger-logado">
+              <ion-icon slot="start" name="options-outline"></ion-icon>
+              ordenar por
+          </ion-button>
+
+          <ion-popover trigger="click-trigger-logado" trigger-action="click">
+              <ng-template>
+                  <ion-list>
+                      <ion-item button (click)="ordenar('ligados')">
+                          <ion-label>Ligados</ion-label>
+                      </ion-item>
+
+                      <ion-item button (click)="ordenar('crescente')">
+                          <ion-label>Ordem crescente</ion-label>
+                      </ion-item>
+
+                      <ion-item button (click)="ordenar('decrescente')">
+                          <ion-label>Ordem decrescente</ion-label>
+                      </ion-item>
+                  </ion-list>
+              </ng-template>
+          </ion-popover>
+      </div>
+  </div>
+
+  <ion-title class="titulo-centralizado">Nenhum alarme criado</ion-title>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button (click)="criarAlarme()">
+          <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
+
+<ion-footer>
+  <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="sleep">
+          <ion-icon name="moon-outline"></ion-icon>
+      </ion-tab-button>
+
+      <ion-tab-button routerLink="/home-logado" class="active-item">
+          <ion-icon name="alarm"></ion-icon>
+      </ion-tab-button>
+
+      <ion-tab-button routerLink="/configuracoes">
+          <ion-icon name="settings-outline"></ion-icon>
+      </ion-tab-button>
+  </ion-tab-bar>
+</ion-footer>
