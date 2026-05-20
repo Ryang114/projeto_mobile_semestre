@@ -1,0 +1,144 @@
+ion-content {
+  --background: transparent;
+  position: relative;
+
+  &::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)), 
+                  var(--ion-background-image) center / cover no-repeat fixed;
+      z-index: -1;
+      pointer-events: none;
+  }
+}
+
+// Container que junta o Perfil (Esquerda) e o Filtro (Direita)
+.topo-home-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 35px 25px 0 25px;
+  width: 100%;
+}
+
+// Bloco do Perfil alinhado horizontalmente na Esquerda
+.perfil-logado-container {
+  display: flex;
+  flex-direction: row; // Mantém ícone e email lado a lado
+  align-items: center;
+  gap: 10px; // Espaço entre o bonequinho e o texto
+
+  // Mantendo suas alterações: Sem fundo e sem bordas extras
+  .avatar-circulo {
+      background: none;
+      border: none;
+      border-radius: 50%;
+      width: auto;
+      height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      ion-icon {
+          font-size: 32px; // Tamanho ideal para ficar sutil no topo
+          color: #3880ff; 
+      }
+  }
+
+  .user-email {
+      color: #8b95a5;
+      font-size: 14px;
+      font-weight: 600;
+      margin: 0;
+      font-family: var(--ion-font-family);
+  }
+}
+
+// Ajuste do Botão de Ordenar na Direita
+.filtro-direita {
+  display: flex;
+  align-items: center;
+}
+
+ion-button {
+  --background: #1a1a1aFF;
+  --color: var(--ion-primary-color);
+  --padding-start: 8px;
+  --padding-end: 12px;
+  height: 35px;
+  width: auto;
+  text-transform: none;
+  font-family: var(--ion-font-family);
+  border: 0.5px solid #333333FF;
+  border-radius: 5px;
+  box-shadow: 4px 4px 7px 0px #00000040;
+  padding-inline-start: 0px;
+
+  ion-icon {
+      margin-right: 8px;
+      margin-left: 0;
+      font-size: 25px;
+      color: white;
+  }
+}
+
+// Título Centralizado com espaço corrigido
+.titulo-centralizado {
+  display: block;
+  width: 100%;
+  margin-top: 60px; // Espaço para não bater na barra do topo
+  text-align: center;
+  font-weight: 800;
+  font-size: 24px;
+  --color: var(--ion-primary-color);
+  text-decoration: none;
+  text-transform: none;
+  position: relative;
+  z-index: 2;
+}
+
+ion-fab {
+  margin-right: 5px;
+}
+
+ion-popover {
+  --background: #121212;
+  --color: white;
+
+  ion-list {
+      background: #121212;
+      padding: 0;
+  }
+
+  ion-item {
+      --background: #121212;
+      --color: white;
+      --border-color: #333;
+      --inner-border-width: 0;
+      font-size: 14px;
+  }
+}
+
+ion-footer {
+  --background: var(--ion-background-color);
+
+  ion-tab-bar {
+      --background: var(--ion-background-color);
+      --border: none;
+      height: 65px;
+  }
+
+  .active-item {
+      ion-icon {
+          background-color: #3880ff;
+          color: white;
+          border-radius: 50%;
+          padding: 10px;
+          font-size: 28px;
+      }
+  }
+}

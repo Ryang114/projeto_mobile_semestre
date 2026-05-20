@@ -29,5 +29,9 @@ export const routes: Routes = [
   {
     path: 'perfil-dev/:idDev', 
     loadComponent: () => import('./perfil-dev/perfil-dev.page').then( m => m.PerfilDevPage)
+  },  {
+    path: 'home-logado',
+    loadComponent: () => import('./home-logado/home-logado.page').then( m => m.HomeLogadoPage)
   },
+
 ];
