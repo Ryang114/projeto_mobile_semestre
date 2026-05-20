@@ -104,7 +104,7 @@ export class ContaPage {
       return;
     }
 
-    // Se passou por tudo, faz o login e vai para a home do alarme
+    
     this.router.navigate(['/home']); 
   }
 
