@@ -28,36 +28,29 @@ ion-content {
 // Bloco do Perfil alinhado horizontalmente na Esquerda
 .perfil-logado-container {
   display: flex;
-  flex-direction: row; // Mantém ícone e email lado a lado
+  flex-direction: row; 
   align-items: center;
-  gap: 10px; // Espaço entre o bonequinho e o texto
+  gap: 10px; 
 
-  // Mantendo suas alterações: Sem fundo e sem bordas extras
-  .avatar-circulo {
-      background: none;
-      border: none;
-      border-radius: 50%;
-      width: auto;
-      height: auto;
+  // Círculo com as Iniciais
+  .avatar-iniciais {
+      width: 45px;
+      height: 45px; /* <--- Garanta que está '45px;' certinho */
+      background-color:  #333333; ;
+      color:#3880ff; 
+      border: 1px solid #333333; 
+      border-radius: 50%; 
+      
       display: flex;
-      align-items: center;
       justify-content: center;
-
-      ion-icon {
-          font-size: 32px; // Tamanho ideal para ficar sutil no topo
-          color: #3880ff; 
-      }
-  }
-
-  .user-email {
-      color: #8b95a5;
-      font-size: 14px;
-      font-weight: 600;
-      margin: 0;
-      font-family: var(--ion-font-family);
+      align-items: center;
+      
+      font-weight: 800; 
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      box-shadow: 4px 4px 7px 0px rgba(0, 0, 0, 0.25);
   }
 }
-
 // Ajuste do Botão de Ordenar na Direita
 .filtro-direita {
   display: flex;

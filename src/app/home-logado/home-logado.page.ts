@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// IMPORTANTE: Trocamos FormsModule por ReactiveFormsModule
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms'; 
 import { RouterModule } from '@angular/router';
 import { 
@@ -18,7 +17,7 @@ import { optionsOutline, moonOutline, alarm, settingsOutline, add, personCircleO
   standalone: true,
   imports: [
     CommonModule, 
-    ReactiveFormsModule, // <-- Adicionado aqui
+    ReactiveFormsModule, 
     RouterModule, 
     IonHeader, 
     IonToolbar, 
@@ -39,7 +38,6 @@ import { optionsOutline, moonOutline, alarm, settingsOutline, add, personCircleO
   ]
 })
 export class HomeLogadoPage implements OnInit {
-  // Criamos o controle do formulário de forma reativa
   perfilForm!: FormGroup;
   emailUsuario: string | null = '';
 
@@ -56,19 +54,41 @@ export class HomeLogadoPage implements OnInit {
 
   ngOnInit() {
     // Recupera o email salvo no banco local
-    this.emailUsuario = localStorage.getItem('emailUsuarioAtual') || 'usuario@teste.com';
+    this.emailUsuario = localStorage.getItem('usuarioLogado');
 
-    // Inicializa o formulário com o valor do email
+    // Inicializa o formulário reativo com o email recuperado
     this.perfilForm = new FormGroup({
-      email: new FormControl(this.emailUsuario)
+      email: new FormControl(this.emailUsuario || '')
     });
   }
 
+  // === COLE ESTA FUNÇÃO AQUI (LOGO ABAIXO DO ngOnInit) ===
+  getIniciaisUsuario(): string {
+    const email = this.perfilForm?.get('email')?.value;
+    if (!email) return '??'; // Se não houver email, mostra pontos de interrogação
+
+    // Pega tudo o que vem antes do '@' (ex: ryan.gomes)
+    const parteAntesDoAt = email.split('@')[0];
+    
+    // Remove pontos, números ou traços para garantir que pegamos apenas letras
+    const apenasLetras = parteAntesDoAt.replace(/[^a-zA-Z]/g, '');
+
+    // Se tiver 2 ou mais letras, pega as 2 primeiras
+    if (apenasLetras.length >= 2) {
+      return apenasLetras.substring(0, 2).toUpperCase();
+    } else if (apenasLetras.length === 1) {
+      return apenasLetras.toUpperCase();
+    }
+    
+    // Caso de segurança: se o nome antes do @ for só números, pega as primeiras letras do email original
+    return email.substring(0, 2).toUpperCase();
+  }
+
   ordenar(tipo: string) {
-    console.log('Ordenando área logada por:', tipo);
+    console.log('Ordenando por:', tipo);
   }
 
   criarAlarme() {
-    console.log('Ação para criar novo alarme.');
+    console.log('Criar alarme clicado');
   }
 }
