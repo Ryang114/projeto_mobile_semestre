@@ -1,15 +1,113 @@
 <ion-content>
 
-  <!-- Botão voltar -->
-  <div class="header-back">
-    <ion-button fill="clear" (click)="voltar()">
+  <div class="header-navigation">
+    <ion-button fill="clear" class="btn-back-arrow" (click)="voltar()">
       <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
     </ion-button>
+
+    <div class="top-nav-icons" *ngIf="emailDoUsuario">
+      <div class="icon-tab" [class.active]="abaAtiva === 'perfil'" (click)="trocarAbaSub('perfil')">
+        <ion-icon name="person-outline"></ion-icon>
+      </div>
+      <div class="icon-tab" [class.active]="abaAtiva === 'email'" (click)="trocarAbaSub('email')">
+        <ion-icon name="mail-outline"></ion-icon>
+      </div>
+      <div class="icon-tab" [class.active]="abaAtiva === 'senha'" (click)="trocarAbaSub('senha')">
+        <ion-icon name="key-outline"></ion-icon>
+      </div>
+    </div>
   </div>
 
-  <div class="auth-container">
+  <div class="auth-container dynamic-profile" *ngIf="emailDoUsuario && abaAtiva === 'perfil'">
 
-    <!-- Abas -->
+    <h2 class="main-title">Minha Conta</h2>
+
+    <div class="profile-input-box">
+      <label class="input-label">Nome</label>
+      <input type="text" [(ngModel)]="nomeUsuario" placeholder="Guest0000">
+    </div>
+
+    <button class="btn-save-profile" (click)="salvarNome()">Salvar</button>
+
+    <div class="profile-footer-actions">
+      <button class="btn-footer-action action-disconnect" (click)="confirmarDesconectar()">
+        Desconectar
+      </button>
+      <button class="btn-footer-action action-delete" (click)="confirmarDeletarConta()">
+        Deletar conta
+      </button>
+    </div>
+
+  </div>
+
+  <div class="auth-container dynamic-profile" *ngIf="emailDoUsuario && abaAtiva === 'email'">
+
+    <h2 class="main-title">Alterar E-mail</h2>
+
+    <div style="background-color: #ffebee; border: 2px solid #ef5350; padding: 15px; margin: 15px 0; border-radius: 8px; text-align: center;">
+      <p style="color: #c62828; font-weight: bold; font-size: 1.1em; margin: 0;">
+       A opção de alterar o e-mail está temporariamente desativada.
+      </p>
+    </div>
+
+    <div class="profile-input-box">
+      <label class="input-label">E-mail atual</label>
+      <input type="email" [(ngModel)]="emailAtual" placeholder="E-mail atual" disabled>
+    </div>
+
+    <div class="profile-input-box">
+      <label class="input-label">Senha atual</label>
+      <input type="password" [(ngModel)]="senhaAtualEmail" placeholder="Senha atual" disabled>
+    </div>
+
+    <div class="profile-input-box">
+      <label class="input-label">E-mail novo</label>
+      <input type="email" [(ngModel)]="emailNovo" placeholder="E-mail novo" disabled>
+    </div>
+
+    <button class="btn-save-profile" (click)="salvarNovoEmail()" disabled style="cursor: not-allowed; opacity: 0.6;">
+      Salvar
+    </button>
+
+  </div>
+
+  <div class="auth-container dynamic-profile" *ngIf="emailDoUsuario && abaAtiva === 'senha'">
+
+    <h2 class="main-title">Alterar senha</h2>
+
+    <div class="profile-input-box" style="position: relative;">
+      <label class="input-label">Senha atual</label>
+      <input [type]="mostrarSenhaAtual ? 'text' : 'password'" [(ngModel)]="senhaAtual" placeholder="Senha atual" style="padding-right: 40px;">
+      <ion-icon class="eye-icon" style="position: absolute; right: 10px; bottom: 12px; cursor: pointer; font-size: 20px;"
+        [name]="mostrarSenhaAtual ? 'eye-off-outline' : 'eye-outline'"
+        (click)="alternarVisibilidadeSenha('senhaAtual')">
+      </ion-icon>
+    </div>
+
+    <div class="profile-input-box" style="position: relative;">
+      <label class="input-label">Senha nova</label>
+      <input [type]="mostrarSenhaNova ? 'text' : 'password'" [(ngModel)]="senhaNova" placeholder="Senha nova" style="padding-right: 40px;">
+      <ion-icon class="eye-icon" style="position: absolute; right: 10px; bottom: 12px; cursor: pointer; font-size: 20px;"
+        [name]="mostrarSenhaNova ? 'eye-off-outline' : 'eye-outline'"
+        (click)="alternarVisibilidadeSenha('senhaNova')">
+      </ion-icon>
+    </div>
+
+    <div class="profile-input-box" style="position: relative;">
+      <label class="input-label">Confirmar senha nova</label>
+      <input [type]="mostrarConfirmarSenhaNova ? 'text' : 'password'" [(ngModel)]="confirmarSenhaNova" placeholder="Confirmar senha nova" style="padding-right: 40px;">
+      <ion-icon class="eye-icon" style="position: absolute; right: 10px; bottom: 12px; cursor: pointer; font-size: 20px;"
+        [name]="mostrarConfirmarSenhaNova ? 'eye-off-outline' : 'eye-outline'"
+        (click)="alternarVisibilidadeSenha('confirmarSenhaNova')">
+      </ion-icon>
+    </div>
+
+    <button class="btn-save-profile" (click)="salvarNovaSenha()">Salvar</button>
+
+  </div>
+
+  <div class="auth-container" *ngIf="!emailDoUsuario">
+
     <div class="tabs">
       <div class="tab-btn" [class.active]="abaAtiva === 'entrar'" (click)="trocarAba('entrar')">
         Entrar
@@ -19,9 +117,7 @@
       </div>
     </div>
 
-    <!-- LOGIN -->
     <div *ngIf="abaAtiva === 'entrar'" class="form-content">
-
       <div class="input-group">
         <ion-icon name="mail-outline" [class.active-icon]="emailLogin.length > 0"></ion-icon>
         <input type="email" placeholder="Email" [(ngModel)]="emailLogin">
@@ -41,9 +137,7 @@
       <button class="btn-submit" (click)="entrar()">Entrar</button>
     </div>
 
-    <!-- CRIAR CONTA -->
     <div *ngIf="abaAtiva === 'criar'" class="form-content">
-
       <div class="input-group">
         <ion-icon name="mail-outline" [class.active-icon]="emailCriar.length > 0"></ion-icon>
         <input type="email" placeholder="Email" [(ngModel)]="emailCriar">
@@ -75,7 +169,6 @@
 
   </div>
 
-  <!-- POPUP -->
   <div class="popup-overlay" *ngIf="mostrarPopupSucesso">
     <div class="popup-box">
       <div class="popup-content">

@@ -6,32 +6,29 @@ export const routes: Routes = [
     loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
   },
   {
-    path: 'pag2',
-    loadComponent: () => import('./pag2/pag2.page').then( m => m.Pag2Page)
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
   },
   {
     path: 'configuracoes',
     loadComponent: () => import('./configuracoes/configuracoes.page').then( m => m.ConfiguracoesPage)
   },
   {
-    path: 'conta',
-    loadComponent: () => import('./conta/conta.page').then( m => m.ContaPage)
+    path: 'pag2',
+    loadComponent: () => import('./pag2/pag2.page').then( m => m.Pag2Page)
   },
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full',
+    path: 'conta',
+    loadComponent: () => import('./conta/conta.page').then( m => m.ContaPage)
   },
   {
     path: 'sobre-nos',
     loadComponent: () => import('./sobre-nos/sobre-nos.page').then( m => m.SobreNosPage)
   },
+  // CONECTA A PÁGINA COLANDO ESSA LINHA AQUI EMBAIXO:
   {
-    path: 'perfil-dev/:idDev', 
+    path: 'perfil-dev/:idDev',
     loadComponent: () => import('./perfil-dev/perfil-dev.page').then( m => m.PerfilDevPage)
-  },  {
-    path: 'home-logado',
-    loadComponent: () => import('./home-logado/home-logado.page').then( m => m.HomeLogadoPage)
   },
-
 ];

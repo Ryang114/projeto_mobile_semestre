@@ -10,8 +10,8 @@ ion-content {
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)), 
-                    var(--ion-background-image) center / cover no-repeat fixed;
+        background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)),
+            var(--ion-background-image) center / cover no-repeat fixed;
         z-index: -1;
         pointer-events: none;
     }
@@ -20,7 +20,8 @@ ion-content {
 // 2. CORREÇÃO DO HEADER (SUMIR BARRA PRETA)
 ion-header.ion-no-border {
     background: transparent;
-    
+    padding-top: 40px;
+
     ion-toolbar {
         --background: transparent;
         --border-width: 0;
@@ -33,13 +34,14 @@ ion-header.ion-no-border {
 
 // 3. CENTRALIZAÇÃO REAL DO TÍTULO
 ion-title {
+    padding-top: 20px;
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    display: flex;
+    display: block;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -47,7 +49,7 @@ ion-title {
     font-size: 24px;
     --color: var(--ion-primary-color);
     pointer-events: none; // Permite clicar no botão de voltar que está "atrás"
-    z-index: 1;
+    z-index: 11;
 }
 
 // Garante que o botão de voltar fique clicável e visível
@@ -59,6 +61,7 @@ ion-buttons {
 // 4. ESTILO DOS CARDS (DESENVOLVEDORES)
 .content-container {
     padding: 10px;
+    margin-top: 30px;
 }
 
 .dev-card {
@@ -72,6 +75,7 @@ ion-buttons {
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
     max-width: 160px;
     cursor: pointer;
+    padding-bottom: 30px;
 
     .image-placeholder {
         height: 180px;
@@ -89,7 +93,7 @@ ion-buttons {
     }
 
     .name-bar {
-        background-color: #1a1a1a; 
+        background-color: #1a1a1a;
         color: white;
         text-align: center;
         font-size: 13px;
