@@ -1,89 +1,174 @@
-ion-content {
-    --background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)), var(--ion-background-image) repeat center;
-
+.content-wrapper {
+  margin-top: 10px;
 }
 
-ion-card.filtro {
-    padding-top: 35px;
-    padding-right: 25px;
-    --background: none;
-    box-shadow: none;
+// ==========================================================
+// ION-DATETIME - SCROLL WHEEL
+// ==========================================================
+ion-datetime {
+  max-width: 280px;
+  margin: 0 auto;
+  --background: transparent;
+  --background-fade: transparent;
+
+  // Corrige o fundo esbranquiçado dos gradientes de fade do scroll
+  // Ajuste o RGB para corresponder ao fundo exato da sua página
+  --wheel-fade-background-rgb: 26, 26, 26;
+
+  background: transparent;
+
+  &::part(container) {
+    background: transparent;
+  }
+
+  &::part(wheel-column) {
+    background: transparent;
+  }
+}
+
+// Números não focados
+ion-datetime::part(wheel-item) {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+// Número ativo no centro
+ion-datetime::part(wheel-item active) {
+  color: #3880ff;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+// ==========================================================
+// DIAS DA SEMANA
+// ==========================================================
+.days-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+
+  .day-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    border: 0.5px solid #333333;
+    background: #1a1a1a;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 4px 4px 7px 0px #00000040;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+
+    &.active {
+      background: #3880ff;
+      color: white;
+      border-color: #3880ff;
+      box-shadow: 0px 0px 12px rgba(56, 128, 255, 0.6);
+      transform: scale(1.05);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}
+
+// ==========================================================
+// LABEL E INPUT
+// ==========================================================
+.label-text {
+  font-size: 15px;
+
+  .highlight-text {
+    color: #3880ff;
+    font-weight: bold;
+  }
+}
+
+.custom-input {
+  --background: #1a1a1a;
+  --color: white;
+  border: 0.5px solid #333333;
+  border-radius: 5px;
+  box-shadow: 4px 4px 7px 0px #00000040;
+  --highlight-color-valid: #3880ff;
+}
+
+// ==========================================================
+// BANNER DO MINIGAME
+// ==========================================================
+.minigame-card {
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(4px);
+  border-radius: 8px;
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.5px solid #333333;
+  box-shadow: 4px 4px 7px 0px #00000040;
+
+  .minigame-placeholder {
     display: flex;
-    justify-content: flex-end;
-    position: relative;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 
+    .placeholder-icon {
+      font-size: 65px;
+      color: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  .minigame-badge {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(16, 16, 16, 0.9);
+    color: #ffffff;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    border-top: 0.5px solid #333333;
+  }
 }
 
-ion-button {
-    --background: #1a1a1aFF;
-    --color: var(--ion-primary-color);
-    --padding-start: 8px;
-    --padding-end: 12px;
-    height: 35px;
-    width: auto;
-    text-transform: none;
-    font-family: var(--ion-font-family);
-    border: 0.5px solid #333333FF;
+// ==========================================================
+// OPÇÕES INFERIORES
+// ==========================================================
+.options-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .option-row {
+    background: #1a1a1a;
+    border: 0.5px solid #333333;
     border-radius: 5px;
     box-shadow: 4px 4px 7px 0px #00000040;
-    padding-inline-start: 0px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
 
-    ion-icon {
-        margin-right: 8px;
-        margin-left: 0;
-        font-size: 16px;
-        color: white;
-    }
-}
-
-ion-title {
-    display: block;
-    width: 100%;
-    margin-top: 30px;
-    text-align: center;
-    font-weight: 800;
-    font-size: 24px;
-    --color: var(--ion-primary-color);
-    text-decoration: none;
-    text-transform: none;
-    position: relative;
-    z-index: 2;
-}
-
-ion-footer {
-    --background: var(--ion-background-color);
-
-    ion-tab-bar {
-        --background: var(--ion-background-color);
-        --border: none;
-        height: 65px;
+    .option-label {
+      color: white;
+      font-size: 15px;
     }
 
-    .active-item {
-
-        ion-icon {
-            background-color: #3880ff;
-            color: white;
-            border-radius: 50%;
-            padding: 10px;
-            font-size: 28px;
-        }
-
-    }
-}
-
-ion-fab {
-    margin-right: 15px;
-    margin-bottom: 20px;
-
-    ion-fab-button {
-        --background: #3880ff;
-        --color: white;
-        --border-radius: 50%;
-        box-shadow: 0 4px 12px rgba(0, 0, 0.4);
+    .option-value {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 14px;
     }
 
-    ion-icon {
-        font-size: 32px;
+    &:active {
+      background: rgba(26, 26, 26, 0.9);
     }
+  }
 }

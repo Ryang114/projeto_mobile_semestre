@@ -15,7 +15,8 @@ import {
 import { IonContent, IonButton, IonIcon, NavController, AlertController, LoadingController } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { Firestore, doc, getDoc, setDoc, updateDoc, collection, query, where, getDocs, deleteDoc } from '@angular/fire/firestore';
-import { onAuthStateChanged, EmailAuthProvider, reauthenticateWithCredential, verifyBeforeUpdateEmail, updatePassword } from '@angular/fire/auth';
+import { onAuthStateChanged, EmailAuthProvider, reauthenticateWithCredential, updatePassword } from '@angular/fire/auth';
+import { AlarmService } from '../core/alarm.service';
 
 @Component({
   selector: 'app-conta',
@@ -63,7 +64,8 @@ export class ContaPage implements OnInit, OnDestroy {
     private auth: AuthService,
     private firestore: Firestore,
     private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private alarmService: AlarmService
   ) {
     addIcons({
       'chevron-back-outline': chevronBackOutline,
@@ -112,11 +114,7 @@ export class ContaPage implements OnInit, OnDestroy {
         this.nomeUsuario = docSnap.data()['nome'] || '';
       } else {
         const novoNome = await this.gerarNomeGuestUnico();
-
-        await setDoc(docRef, {
-          nome: novoNome,
-          criadoEm: new Date()
-        });
+        await setDoc(docRef, { nome: novoNome, criadoEm: new Date() });
         this.nomeUsuario = novoNome;
       }
     } catch (e) {
@@ -197,12 +195,10 @@ export class ContaPage implements OnInit, OnDestroy {
       this.exibirAlerta('Campos Vazios', 'Por favor, preencha todos os campos de senha.');
       return;
     }
-
     if (nova !== confirmar) {
       this.exibirAlerta('Erro de Confirmação', 'A nova senha e a confirmação não são iguais.');
       return;
     }
-
     if (nova.length < 6) {
       this.exibirAlerta('Senha muito curta', 'A nova senha deve ter no mínimo 6 caracteres.');
       return;
@@ -215,13 +211,10 @@ export class ContaPage implements OnInit, OnDestroy {
       const authInstance = (this.auth as any).auth;
       const user = authInstance?.currentUser;
 
-      if (!user) {
-        throw new Error('Usuário não localizado na sessão.');
-      }
+      if (!user) throw new Error('Usuário não localizado na sessão.');
 
       const credential = EmailAuthProvider.credential(user.email!, atual);
       await reauthenticateWithCredential(user, credential);
-
       await updatePassword(user, nova);
 
       await loading.dismiss();
@@ -229,12 +222,11 @@ export class ContaPage implements OnInit, OnDestroy {
       this.senhaAtual = '';
       this.senhaNova = '';
       this.confirmarSenhaNova = '';
-
       this.mostrarSenhaAtual = false;
       this.mostrarSenhaNova = false;
       this.mostrarConfirmarSenhaNova = false;
 
-      this.exibirAlerta('Sucesso', 'Sua senha foi updated com sucesso!');
+      this.exibirAlerta('Sucesso', 'Sua senha foi atualizada com sucesso!');
       this.abaAtiva = 'perfil';
 
     } catch (error: any) {
@@ -242,7 +234,6 @@ export class ContaPage implements OnInit, OnDestroy {
       console.error('Erro detalhado ao mudar senha:', error);
 
       let messageErro = 'Não foi possível atualizar a senha. Tente novamente mais tarde.';
-
       if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
         messageErro = 'A senha atual informada está incorreta.';
       } else if (error.code === 'auth/requires-recent-login') {
@@ -269,10 +260,7 @@ export class ContaPage implements OnInit, OnDestroy {
       cssClass: 'custom-alert',
       buttons: [
         { text: 'Cancelar', role: 'cancel' },
-        {
-          text: 'Confirmar',
-          handler: () => { this.sair(); }
-        }
+        { text: 'Confirmar', handler: () => { this.sair(); } }
       ]
     });
     await alert.present();
@@ -285,10 +273,7 @@ export class ContaPage implements OnInit, OnDestroy {
       cssClass: 'custom-alert-danger',
       buttons: [
         { text: 'Cancelar', role: 'cancel' },
-        {
-          text: 'Deletar',
-          handler: () => { this.excluirContaDefinitivo(); }
-        }
+        { text: 'Deletar', handler: () => { this.excluirContaDefinitivo(); } }
       ]
     });
     await alert.present();
@@ -317,9 +302,7 @@ export class ContaPage implements OnInit, OnDestroy {
     try {
       const docRef = doc(this.firestore, `usuarios/${user.uid}`);
       await deleteDoc(docRef);
-
       await user.delete();
-
       await loading.dismiss();
       this.sair();
     } catch (erro: any) {
@@ -358,25 +341,47 @@ export class ContaPage implements OnInit, OnDestroy {
   }
 
   alternarVisibilidadeSenha(tipo: string) {
-    if (tipo === 'senha') {
-      this.mostrarSenha = !this.mostrarSenha;
-    } else if (tipo === 'confirmar') {
-      this.mostrarConfirmarSenha = !this.mostrarConfirmarSenha;
-    } else if (tipo === 'senhaAtual') {
-      this.mostrarSenhaAtual = !this.mostrarSenhaAtual;
-    } else if (tipo === 'senhaNova') {
-      this.mostrarSenhaNova = !this.mostrarSenhaNova;
-    } else if (tipo === 'confirmarSenhaNova') {
-      this.mostrarConfirmarSenhaNova = !this.mostrarConfirmarSenhaNova;
-    }
+    if (tipo === 'senha') this.mostrarSenha = !this.mostrarSenha;
+    else if (tipo === 'confirmar') this.mostrarConfirmarSenha = !this.mostrarConfirmarSenha;
+    else if (tipo === 'senhaAtual') this.mostrarSenhaAtual = !this.mostrarSenhaAtual;
+    else if (tipo === 'senhaNova') this.mostrarSenhaNova = !this.mostrarSenhaNova;
+    else if (tipo === 'confirmarSenhaNova') this.mostrarConfirmarSenhaNova = !this.mostrarConfirmarSenhaNova;
   }
 
   async entrar() {
     this.limparErros();
     if (!this.emailLogin) { this.erroEmail = 'Email incorreto'; return; }
     if (!this.senhaLogin) { this.erroSenha = 'Senha incorreta'; return; }
+
     try {
       await this.auth.login(this.emailLogin, this.senhaLogin);
+
+      // Verifica se tem alarmes locais salvos antes do login
+      const alarmesLocais = this.alarmService.getAlarmesLocais();
+
+      if (alarmesLocais.length > 0) {
+        const alert = await this.alertCtrl.create({
+          header: 'Alarmes locais encontrados',
+          message: `Você tem ${alarmesLocais.length} alarme(s) salvos neste dispositivo. O que deseja fazer?`,
+          buttons: [
+            {
+              text: 'Descartar locais',
+              role: 'cancel',
+              handler: () => {
+                this.alarmService.limparAlarmesLocais();
+              }
+            },
+            {
+              text: 'Migrar para minha conta',
+              handler: async () => {
+                await this.alarmService.migrarLocaisParaFirebase();
+              }
+            }
+          ]
+        });
+        await alert.present();
+      }
+
     } catch (erro: any) {
       this.erroEmail = 'Email incorreto';
       this.erroSenha = 'Senha incorreta';

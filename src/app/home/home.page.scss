@@ -1,186 +1,200 @@
 ion-content {
-    --background: transparent;
-    position: relative;
+  --background: transparent;
+  position: relative;
 
-    &::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background:
-            linear-gradient(rgba(15, 23, 42, 0.7),
-            rgba(15, 23, 42, 0.7)),
-            var(--ion-background-image) center / cover no-repeat fixed;
-        z-index: -1;
-        pointer-events: none;
-    }
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)),
+                var(--ion-background-image) center / cover no-repeat fixed;
+    z-index: -1;
+    pointer-events: none;
+  }
 }
 
+// ─── FILTRO ───────────────────────────────────────────────
 ion-card.filtro {
-    padding-top: 35px;
-    padding-right: 25px;
-    --background: none;
-    box-shadow: none;
-    display: flex;
-    justify-content: flex-end;
-}
+  --background: none;
+  box-shadow: none;
+  padding: 35px 20px 0;
 
-.top-buttons {
+  .filtro-row {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    width: 100%;
-}
-
-.perfil-icon {
-    margin-left: 15px;
-    margin-right: auto;
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    border-radius: 50%;
-    box-shadow: none;
-
-    ion-icon {
-        font-size: 60px;
-        color: #34363a;
-    }
+  }
 }
 
 ion-button {
-    --background: #1a1a1a;
-    --color: white;
-    --padding-start: 8px;
-    --padding-end: 12px;
-    height: 40px;
-    text-transform: none;
-    border: 1px solid #333;
-    border-radius: 8px;
-    box-shadow: 4px 4px 7px #00000040;
-    font-family: var(--ion-font-family);
+  --background: #1a1a1a;
+  --color: var(--ion-primary-color);
+  --padding-start: 8px;
+  --padding-end: 12px;
+  height: 35px;
+  text-transform: none;
+  font-family: var(--ion-font-family);
+  border: 0.5px solid #333333;
+  border-radius: 5px;
+  box-shadow: 4px 4px 7px 0px #00000040;
 
-    ion-icon {
-        margin-right: 8px;
-        font-size: 22px;
-        color: white;
-    }
+  ion-icon {
+    margin-right: 8px;
+    font-size: 20px;
+    color: white;
+  }
 }
 
-.icon-button {
-    width: 42px;
+.btn-conta {
+  --background: transparent;
+  border: none;
+  box-shadow: none;
+  font-size: 32px;
 
-    ion-icon {
-        margin-right: 0;
-        font-size: 20px;
-    }
+  ion-icon {
+    font-size: 32px;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+  }
 }
 
 ion-popover {
-    --background: transparent;
-    --box-shadow: none;
+  --background: #121212;
+  --color: white;
+
+  ion-list {
+    background: #121212;
+    padding: 0;
+  }
+
+  ion-item {
+    --background: #121212;
+    --color: white;
+    --border-color: #333;
+    --inner-border-width: 0;
+    font-size: 14px;
+  }
 }
 
-.menu-custom {
-    background: #050505;
-    border-radius: 14px;
-    padding: 8px;
-    min-width: 240px;
-    border: 1px solid #1f1f1f;
-    box-shadow:
-        0 10px 25px rgba(0, 0, 0, 0.6),
-        0 0 0 1px rgba(255,255,255,0.03);
-}
+// ─── ESTADO VAZIO ─────────────────────────────────────────
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 80px;
+  gap: 8px;
 
-.opcao {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    user-select: none;
-    padding: 13px 12px;
-    border-radius: 10px;
+  ion-icon {
+    font-size: 64px;
+    color: rgba(255, 255, 255, 0.15);
+  }
+
+  p {
     color: white;
-    font-size: 18px;
-    transition: 0.2s;
-}
-
-.opcao:hover {
-    background: rgba(255,255,255,0.05);
-}
-
-.radio {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    border: 2px solid #2d2d2d;
-    position: relative;
-}
-
-.opcao.ativa .radio {
-    background: #2f7df6;
-    border-color: #2f7df6;
-}
-
-.opcao.ativa .radio::after {
-    content: '✓';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -52%);
-    color: white;
-    font-size: 13px;
-    font-weight: bold;
-}
-
-ion-title {
-    display: block;
-    width: 100%;
-    margin-top: 30px;
-    text-align: center;
+    font-size: 20px;
     font-weight: 800;
-    font-size: 24px;
-    --color: var(--ion-primary-color);
+    margin: 0;
+  }
+
+  span {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 14px;
+  }
 }
 
+// ─── CARDS DE ALARME ──────────────────────────────────────
+.alarmes-container {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.alarm-card {
+  background: #1a1a1a;
+  border: 0.5px solid #333333;
+  border-radius: 10px;
+  box-shadow: 4px 4px 7px 0px #00000040;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .alarm-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    .alarm-hora {
+      color: white;
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .alarm-nome {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .alarm-dias {
+      color: #3880ff;
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
+
+  .alarm-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .btn-deletar {
+    --background: transparent;
+    --color: rgba(255, 255, 255, 0.3);
+    border: none;
+    box-shadow: none;
+    height: 32px;
+
+    ion-icon {
+      font-size: 18px;
+      color: rgba(255, 80, 80, 0.6);
+      margin: 0;
+    }
+
+    &:active ion-icon {
+      color: #ff4d4d;
+    }
+  }
+}
+
+// ─── FAB ──────────────────────────────────────────────────
 ion-fab {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 
+// ─── FOOTER ───────────────────────────────────────────────
 ion-footer {
+  --background: var(--ion-background-color);
+
+  ion-tab-bar {
     --background: var(--ion-background-color);
+    --border: none;
+    height: 65px;
+  }
 
-    ion-tab-bar {
-        --background: var(--ion-background-color);
-        --border: none;
-        height: 65px;
-    }
-
-    ion-tab-bar {
-        --background: var(--ion-background-color);
-        --border: none;
-        height: 65px;
-
-        ion-tab-button {
-            ion-icon {
-                color: rgba(255,255,255,0.9);
-                font-size: 20px;
-            }
-        }
-    }
-
-    .active-item {
-        ion-icon {
-            background-color: #3880ff;
-            color: white;
-            border-radius: 50%;
-            padding: 6px;
-            font-size: 18px;
-        }
-    }
+  .active-item ion-icon {
+    background-color: #3880ff;
+    color: white;
+    border-radius: 50%;
+    padding: 10px;
+    font-size: 28px;
+  }
 }

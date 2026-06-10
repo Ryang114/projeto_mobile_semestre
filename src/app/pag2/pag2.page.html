@@ -1,28 +1,77 @@
-
-    <ion-title>Editar alarme</ion-title>
-  
+<ion-header class="ion-no-border" [translucent]="true">
+  <ion-toolbar color="transparent">
+    <ion-buttons slot="start" class="ion-padding-start">
+      <ion-button>
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    
+    <ion-buttons slot="end" class="ion-padding-end">
+      <ion-button (click)="salvar()" color="primary">
+        <ion-icon slot="start" name="save-outline"></ion-icon>
+        Salvar
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-list>
-    <ion-item>
-      <ion-input 
-      label="Nome do alarme"
-      label-placement="stacked"
-      placeholder="Ex: Academia, Escola..."
-      [(ngModel)]="alarmName">
-    </ion-input>
-    </ion-item>
-  </ion-list>
 
-  <ion-item>
-    <ion-datetime
-      presentation="time"
-      prefer-wheel="tue"
-      [(ngModel)]="alarmTime">
+  <div class="content-wrapper ion-padding">
+    
+    <ion-datetime 
+      presentation="time" 
+      prefer-wheel="true"
+      size="cover"
+      [(ngModel)]="horaEscolhida"
+      style="--background: transparent; --background-fade: transparent; background: transparent;">
     </ion-datetime>
-  </ion-item>
 
-  <ion-button expand="block" (click)="salvarAlarme()">
-    Salvar Alarme
-  </ion-button>
+    <div class="section-container ion-margin-top">
+      <ion-text color="light">
+        <p class="label-text">Repetir: <span class="highlight-text">Uma vez</span></p>
+      </ion-text>
+      
+      <div class="days-container ion-margin-top">
+        <button 
+          *ngFor="let dia of dias" 
+          class="day-btn" 
+          [class.active]="dia.ativo"
+          (click)="alternarDia(dia)">
+          {{ dia.nome }}
+        </button>
+      </div>
+    </div>
+
+    <ion-item fill="solid" class="custom-input ion-margin-top">
+      <ion-input 
+        label="Nome:" 
+        label-placement="floating" 
+        placeholder="Ex: Acorda ou Consequências"
+        [(ngModel)]="nomeAlarme">
+      </ion-input>
+    </ion-item>
+
+    <div class="minigame-card ion-margin-top ion-text-center">
+      <div class="minigame-placeholder">
+        <ion-icon name="image-outline" class="placeholder-icon"></ion-icon>
+        <div class="minigame-badge">
+          <span>Nenhum minigame selecionado</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="options-group ion-margin-top">
+      <div class="option-row" button>
+        <span class="option-label">Som do Alarme</span>
+        <span class="option-value">Padrão</span>
+      </div>
+
+      <div class="option-row" button>
+        <span class="option-label">Soneca</span>
+        <span class="option-value">15 min</span>
+      </div>
+    </div>
+
+  </div>
 </ion-content>
