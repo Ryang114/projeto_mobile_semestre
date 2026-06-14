@@ -1,11 +1,11 @@
 <ion-header class="ion-no-border" [translucent]="true">
   <ion-toolbar color="transparent">
     <ion-buttons slot="start" class="ion-padding-start">
-      <ion-button>
+      <ion-button (click)="fechar()">
         <ion-icon slot="icon-only" name="close-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    
+
     <ion-buttons slot="end" class="ion-padding-end">
       <ion-button (click)="salvar()" color="primary">
         <ion-icon slot="start" name="save-outline"></ion-icon>
@@ -18,9 +18,9 @@
 <ion-content [fullscreen]="true">
 
   <div class="content-wrapper ion-padding">
-    
-    <ion-datetime 
-      presentation="time" 
+
+    <ion-datetime
+      presentation="time"
       prefer-wheel="true"
       size="cover"
       [(ngModel)]="horaEscolhida"
@@ -29,13 +29,16 @@
 
     <div class="section-container ion-margin-top">
       <ion-text color="light">
-        <p class="label-text">Repetir: <span class="highlight-text">Uma vez</span></p>
-      </ion-text>
-      
+        <p class="label-text">
+          Repetir:
+          <span class="highlight-text">{{ textoDiasSelecionados }}</span>
+          </p>
+          </ion-text>
+
       <div class="days-container ion-margin-top">
-        <button 
-          *ngFor="let dia of dias" 
-          class="day-btn" 
+        <button
+          *ngFor="let dia of dias"
+          class="day-btn"
           [class.active]="dia.ativo"
           (click)="alternarDia(dia)">
           {{ dia.nome }}
@@ -44,29 +47,30 @@
     </div>
 
     <ion-item fill="solid" class="custom-input ion-margin-top">
-      <ion-input 
-        label="Nome:" 
-        label-placement="floating" 
+      <ion-input
+        label="Nome:"
+        label-placement="floating"
         placeholder="Ex: Acorda ou Consequências"
         [(ngModel)]="nomeAlarme">
       </ion-input>
     </ion-item>
 
-    <div class="minigame-card ion-margin-top ion-text-center">
-      <div class="minigame-placeholder">
-        <ion-icon name="image-outline" class="placeholder-icon"></ion-icon>
-        <div class="minigame-badge">
-          <span>Nenhum minigame selecionado</span>
-        </div>
-      </div>
+    <input type="file" accept="audio/*" id="filePicker" style="display:none" (change)="onFilePicked($event)" />
+
+    <div *ngIf="selectedSound && selectedSound !== 'beep.wav'" class="ion-margin-top">
+      <small>Som selecionado: {{ selectedSoundName }}</small>
     </div>
 
-    <div class="options-group ion-margin-top">
-      <div class="option-row" button>
-        <span class="option-label">Som do Alarme</span>
-        <span class="option-value">Padrão</span>
-      </div>
 
+    <ion-item class="ion-margin-top">
+      <ion-label>Som do Alarme</ion-label>
+      <ion-select [(ngModel)]="selectedSound" interface="popover" (ionChange)="onSoundChange($event)">
+        <ion-select-option *ngFor="let s of sounds" [value]="s.value">{{ s.label }}</ion-select-option>
+        <ion-select-option value="file">Escolher arquivo...</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <div class="options-group ion-margin-top">
       <div class="option-row" button>
         <span class="option-label">Soneca</span>
         <span class="option-value">15 min</span>

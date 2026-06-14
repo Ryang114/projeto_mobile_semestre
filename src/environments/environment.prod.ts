@@ -1,5 +1,6 @@
 export const environment = {
-  production: false,
+  production: true,
+  showDebug: false,
   firebaseConfig: {
     apiKey: "AIzaSyDmBU2eh0lFyk5-cuCJtr5dSYOqZ68L_a8",
     authDomain: "alarme-interativo.firebaseapp.com",

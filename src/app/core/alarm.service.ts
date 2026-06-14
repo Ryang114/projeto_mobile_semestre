@@ -11,6 +11,9 @@ export interface Alarm {
   nome: string;
   dias: string[];
   ativo: boolean;
+  // caminho ou nome do som selecionado. Pode ser um nome de arquivo em assets (ex: 'beep.wav')
+  // ou um data URL ('data:audio/...') quando o usuário escolhe um arquivo local.
+  som?: string;
   criadoEm?: Timestamp;
 }
 

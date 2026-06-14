@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" [icon]="arrowBackOutline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>📊 Debug Logs</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Stats Card -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Resumo</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Total de logs:</strong> {{ logs.length }}</p>
+      <p><strong>Info:</strong> {{ stats.info }}</p>
+      <p><strong>Warnings:</strong> {{ stats.warn }}</p>
+      <p><strong>Erros:</strong> {{ stats.error }}</p>
+      <p><strong>Sucessos:</strong> {{ stats.success }}</p>
+      <p><strong>Fontes:</strong> {{ stats.sources?.join(', ') || 'N/A' }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Action Buttons -->
+  <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+    <ion-button expand="block" color="warning" (click)="clearLogs()">
+      <ion-icon slot="start" [icon]="trashBinOutline"></ion-icon>
+      Limpar Logs
+    </ion-button>
+    <ion-button expand="block" color="success" (click)="exportLogs()">
+      <ion-icon slot="start" [icon]="documentTextOutline"></ion-icon>
+      Exportar
+    </ion-button>
+  </div>
+
+  <!-- Logs List -->
+  <div *ngIf="logs.length === 0" style="text-align: center; padding: 2rem;">
+    <p style="color: var(--ion-color-medium);">Nenhum log registrado ainda...</p>
+  </div>
+
+  <ion-card *ngFor="let log of logs | slice:logs.length-50">
+    <ion-card-content>
+      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+        <strong style="min-width: 100px;">{{ log.timestamp }}</strong>
+        <span style="color: var(--ion-color-medium); font-size: 0.9rem;">{{ log.source }}</span>
+        <span style="color: var(--ion-color-{{ getLevelColor(log.level) }});">{{ getLevelIcon(log.level) }} {{ log.level }}</span>
+      </div>
+      <p style="margin: 0; font-weight: 500;">{{ log.message }}</p>
+      <div *ngIf="log.data" style="background-color: var(--ion-color-light); padding: 0.5rem; border-radius: 4px; margin-top: 0.5rem; font-family: monospace; font-size: 0.85rem; overflow-x: auto;">
+        <pre style="margin: 0;">{{ log.data | json }}</pre>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+

@@ -1,0 +1,61 @@
+<ion-content class="ion-padding-horizontal">
+  <button type="button" class="close-button" (click)="fecharSemSalvar()" aria-label="Fechar alarme">
+    <ion-icon [icon]="closeOutline"></ion-icon>
+  </button>
+
+  <div class="alarmes-container alarm-disparo-container">
+
+    <!-- Ícone pulsante -->
+    <div class="alarm-disparo-icon-wrap">
+      <ion-icon [icon]="alarmOutline" class="alarm-icon" [class.alarm-icon-ringing]="playing"></ion-icon>
+    </div>
+
+    <!-- Hora e nome -->
+    <div class="alarm-disparo-info">
+      <span class="alarm-hora-grande">{{ alarme?.hora ?? '' }}</span>
+      <span class="alarm-nome-destaque">{{ alarme?.nome ?? 'Alarme' }}</span>
+    </div>
+
+    <!-- Card de ações no estilo home -->
+    <div class="alarm-card alarm-disparo-card">
+      <div class="alarm-disparo-actions">
+
+        <ion-button expand="block" color="primary" (click)="tocar()" *ngIf="!playing" class="control-button">
+          <ion-icon slot="start" name="notifications-outline"></ion-icon>
+          Tocar
+        </ion-button>
+
+        <ion-button expand="block" (click)="parar()" *ngIf="playing" class="control-button btn-parar">
+          <ion-icon slot="start" name="stop-outline"></ion-icon>
+          Parar
+        </ion-button>
+
+        <ion-button expand="block" fill="outline" (click)="soneca(5)" class="control-button btn-soneca">
+          <ion-icon slot="start" name="moon-outline"></ion-icon>
+          Soneca (5 min)
+        </ion-button>
+
+      </div>
+    </div>
+
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-tab-bar slot="bottom">
+
+    <ion-tab-button tab="sleep">
+      <ion-icon name="moon-outline"></ion-icon>
+    </ion-tab-button>
+
+    <ion-tab-button routerLink="/home" class="active-item">
+      <ion-icon name="alarm"></ion-icon>
+    </ion-tab-button>
+
+    <ion-tab-button routerLink="/configuracoes">
+      <ion-icon name="settings-outline"></ion-icon>
+    </ion-tab-button>
+
+  </ion-tab-bar>
+</ion-footer>

@@ -1,11 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
-const src = path.join(__dirname, '..', 'src', 'assets', 'sounds', 'beep.wav');
+const soundsDir = path.join(__dirname, '..', 'src', 'assets', 'sounds');
 const androidRaw = path.join(__dirname, '..', 'android', 'app', 'src', 'main', 'res', 'raw');
 
-if (!fs.existsSync(src)) {
-  console.error('Arquivo src/assets/sounds/beep.wav não encontrado. Coloque seu beep.wav lá antes de rodar este script.');
+if (!fs.existsSync(soundsDir)) {
+  console.error('Pasta src/assets/sounds não encontrada. Coloque seus arquivos de som dentro dela antes de rodar este script.');
   process.exit(1);
 }
 
@@ -14,6 +14,16 @@ if (!fs.existsSync(androidRaw)) {
   fs.mkdirSync(androidRaw, { recursive: true });
 }
 
-const dest = path.join(androidRaw, 'beep.wav');
-fs.copyFileSync(src, dest);
-console.log('beep.wav copiado para', dest);
+// Copia todos os arquivos de sons (mantém o nome)
+const files = fs.readdirSync(soundsDir).filter(f => /\.(wav|mp3|ogg)$/i.test(f));
+if (files.length === 0) {
+  console.error('Nenhum arquivo de áudio encontrado em src/assets/sounds. Adicione pelo menos um .wav/.mp3/.ogg.');
+  process.exit(1);
+}
+
+for (const file of files) {
+  const srcFile = path.join(soundsDir, file);
+  const dest = path.join(androidRaw, file);
+  fs.copyFileSync(srcFile, dest);
+  console.log(`${file} copiado para ${dest}`);
+}

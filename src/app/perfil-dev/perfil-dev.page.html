@@ -1,14 +1,16 @@
 <ion-header class="ion-no-border">
   <ion-toolbar class="transparent-header">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/sobre-nos" color="light"></ion-back-button>
+      <ion-button fill="clear" class="btn-back-arrow" (click)="voltar()">
+        <ion-icon slot="icon-only" [icon]="chevronBackOutline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <div class="content-container">
-    
+
     <div class="perfil-layout">
       <div class="individual-photo">
         <img [src]="fotoDev" alt="Foto do Dev">
@@ -17,16 +19,33 @@
       <div class="info-layout">
         <h2 class="dev-name">{{ nomeDev }}</h2>
         <div class="contact-icons">
-          <ion-icon name="mail-outline" class="contact-icon"></ion-icon>
-          
-          <ion-icon 
-            name="logo-github" 
-            class="contact-icon github-click" 
+          <ion-icon
+            name="mail-outline"
+            class="contact-icon email-click"
+            (click)="abrirEmail()"
+            (keydown.enter)="abrirEmail()"
+            tabindex="0"
+            role="button"
+            aria-label="Abrir opções de e-mail">
+          </ion-icon>
+
+          <ion-icon
+            name="logo-github"
+            class="contact-icon github-click"
             *ngIf="mostrarGithub"
             (click)="abrirGithub()">
           </ion-icon>
 
-          <div class="ra-placeholder" *ngIf="mostrarRa">RA</div>
+          <div
+            class="ra-placeholder"
+            *ngIf="mostrarRa"
+            (click)="abrirRA()"
+            (keydown.enter)="abrirRA()"
+            tabindex="0"
+            role="button"
+            aria-label="Abrir perfil no RetroAchievements">
+            RA
+          </div>
         </div>
       </div>
     </div>
@@ -40,5 +59,25 @@
       <div class="nota-box">{{ notaDev }}</div>
     </div>
 
+  </div>
+
+  <div class="email-modal-backdrop" *ngIf="modalEmailAberto" (click)="fecharModalEmail()"></div>
+
+  <div class="email-modal" *ngIf="modalEmailAberto" role="dialog" aria-modal="true" aria-labelledby="email-modal-title">
+    <div class="email-modal-header">
+      <h3 id="email-modal-title">Contato por e-mail</h3>
+      <button type="button" class="email-modal-close" (click)="fecharModalEmail()" aria-label="Fechar">×</button>
+    </div>
+
+    <p class="email-modal-subtitle">Escolha uma ação para este contato:</p>
+
+    <div class="email-modal-address">{{ emailDestino }}</div>
+
+    <div class="email-modal-actions">
+      <button type="button" class="email-modal-btn copy-btn" (click)="copiarEmail()">Copiar</button>
+      <button type="button" class="email-modal-btn send-btn" (click)="abrirGmail()">Enviar</button>
+    </div>
+
+    <p class="email-modal-status" *ngIf="emailCopiado">E-mail copiado!</p>
   </div>
 </ion-content>

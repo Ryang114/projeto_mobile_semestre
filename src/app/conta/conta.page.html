@@ -44,28 +44,22 @@
 
     <h2 class="main-title">Alterar E-mail</h2>
 
-    <div style="background-color: #ffebee; border: 2px solid #ef5350; padding: 15px; margin: 15px 0; border-radius: 8px; text-align: center;">
-      <p style="color: #c62828; font-weight: bold; font-size: 1.1em; margin: 0;">
-       A opção de alterar o e-mail está temporariamente desativada.
-      </p>
-    </div>
-
     <div class="profile-input-box">
       <label class="input-label">E-mail atual</label>
-      <input type="email" [(ngModel)]="emailAtual" placeholder="E-mail atual" disabled>
+      <input type="email" [(ngModel)]="emailAtual" placeholder="E-mail atual">
     </div>
 
     <div class="profile-input-box">
       <label class="input-label">Senha atual</label>
-      <input type="password" [(ngModel)]="senhaAtualEmail" placeholder="Senha atual" disabled>
+      <input type="password" [(ngModel)]="senhaAtualEmail" placeholder="Senha atual">
     </div>
 
     <div class="profile-input-box">
       <label class="input-label">E-mail novo</label>
-      <input type="email" [(ngModel)]="emailNovo" placeholder="E-mail novo" disabled>
+      <input type="email" [(ngModel)]="emailNovo" placeholder="E-mail novo">
     </div>
 
-    <button class="btn-save-profile" (click)="salvarNovoEmail()" disabled style="cursor: not-allowed; opacity: 0.6;">
+    <button class="btn-save-profile" (click)="salvarNovoEmail()">
       Salvar
     </button>
 

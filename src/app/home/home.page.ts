@@ -1,5 +1,6 @@
 import { RouterModule, Router } from '@angular/router';
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { ViewWillEnter } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import {
   IonContent, IonCard, IonButton, IonIcon, IonFooter,
@@ -26,7 +27,7 @@ import {
     IonPopover, IonList, IonItem, IonLabel, IonToggle, RouterModule
   ],
 })
-export class HomePage implements OnInit, OnDestroy {
+export class HomePage implements OnInit, OnDestroy, ViewWillEnter {
 
   private alarmService = inject(AlarmService);
   private notificationService = inject(NotificationService);
@@ -34,7 +35,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   isLoggedIn$: Observable<boolean>;
   alarmes: Alarm[] = [];
-  ordemSelecionada = 'proximo';
+  ordemSelecionada = 'crescente';
 
   private unsubscribeFirebase?: () => void;
   private authSub?: Subscription;
@@ -70,16 +71,28 @@ export class HomePage implements OnInit, OnDestroy {
     });
   }
 
+    ionViewWillEnter() {
+    this.alarmes = this.ordenar(this.alarmService.getAlarmesLocais());
+  }
+
   ngOnDestroy() {
     if (this.unsubscribeFirebase) this.unsubscribeFirebase();
     if (this.authSub) this.authSub.unsubscribe();
   }
 
+  get textoOrdem(): string {
+    return this.ordemSelecionada === 'decrescente' ? 'Horário decrescente' : 'Horário crescente';
+  }
+
+  private paraMinutos(hora: string): number {
+    const [horas, minutos] = hora.split(':').map(valor => Number(valor));
+    return (Number.isNaN(horas) ? 0 : horas) * 60 + (Number.isNaN(minutos) ? 0 : minutos);
+  }
+
   ordenar(alarmes: Alarm[]): Alarm[] {
     return [...alarmes].sort((a, b) => {
-      if (this.ordemSelecionada === 'decrescente') return b.hora.localeCompare(a.hora);
-      if (this.ordemSelecionada === 'ligados') return Number(b.ativo) - Number(a.ativo);
-      return a.hora.localeCompare(b.hora);
+      const diferenca = this.paraMinutos(a.hora) - this.paraMinutos(b.hora);
+      return this.ordemSelecionada === 'decrescente' ? -diferenca : diferenca;
     });
   }
 
@@ -113,6 +126,11 @@ export class HomePage implements OnInit, OnDestroy {
 
   novoAlarme() {
     this.router.navigate(['/pag2']);
+  }
+
+  editarAlarme(alarme: Alarm) {
+    if (!alarme || !alarme.id) return;
+    this.router.navigate(['/pag2'], { queryParams: { alarmeId: alarme.id } });
   }
 
   diasFormatados(dias: string[]): string {
