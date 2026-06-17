@@ -26,6 +26,14 @@ export const routes: Routes = [
     path: 'sobre-nos',
     loadComponent: () => import('./sobre-nos/sobre-nos.page').then( m => m.SobreNosPage)
   },
+  {
+    path: 'alarm',
+    loadComponent: () => import('./alarm/alarm.page').then(m => m.AlarmPage)
+  },
+  {
+    path: 'debug-logs',
+    loadComponent: () => import('./debug-logs/debug-logs.page').then(m => m.DebugLogsPage)
+  },
   // CONECTA A PÁGINA COLANDO ESSA LINHA AQUI EMBAIXO:
   {
     path: 'perfil-dev/:idDev',

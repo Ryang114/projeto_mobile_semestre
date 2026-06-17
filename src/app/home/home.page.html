@@ -4,66 +4,81 @@
   <ion-card class="filtro">
     <div class="filtro-row">
 
-      <ion-button id="click-trigger">
-        <ion-icon slot="start" name="options-outline"></ion-icon>
-        Ordenar por
+      <!-- Conta -->
+      <ion-button fill="clear" routerLink="/conta" class="btn-conta"
+        [class.logado]="(isLoggedIn$ | async)">
+        <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
       </ion-button>
 
-      <ion-button fill="clear" routerLink="/conta" class="btn-conta">
-        <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
+      <!-- Ordenação -->
+      <ion-button id="click-trigger" class="btn-ordenar">
+        <ion-icon slot="start" name="options-outline"></ion-icon>
+        {{ textoOrdem }}
       </ion-button>
 
     </div>
 
+    <!-- POPUP ORDEM -->
     <ion-popover trigger="click-trigger" trigger-action="click">
       <ng-template>
         <ion-list>
-          <ion-item button (click)="selecionarOrdem('ligados')">
-            <ion-label>Ligados primeiro</ion-label>
-          </ion-item>
           <ion-item button (click)="selecionarOrdem('crescente')">
-            <ion-label>Ordem crescente</ion-label>
+            <ion-label>Horário crescente</ion-label>
           </ion-item>
           <ion-item button (click)="selecionarOrdem('decrescente')">
-            <ion-label>Ordem decrescente</ion-label>
+            <ion-label>Horário decrescente</ion-label>
           </ion-item>
         </ion-list>
       </ng-template>
     </ion-popover>
+
   </ion-card>
 
   <!-- LISTA DE ALARMES -->
   <div class="alarmes-container ion-padding-horizontal">
 
-    <!-- Estado vazio -->
+    <!-- VAZIO -->
     <div class="empty-state" *ngIf="alarmes.length === 0">
       <ion-icon name="alarm"></ion-icon>
       <p>Nenhum alarme criado</p>
       <span>Toque no + para adicionar</span>
     </div>
 
-    <!-- Cards dos alarmes -->
-    <div class="alarm-card" *ngFor="let alarme of alarmes">
+    <!-- CARDS -->
+    <div class="alarm-card"
+      *ngFor="let alarme of alarmes"
+      (click)="editarAlarme(alarme)"
+      role="button"
+      tabindex="0">
+
       <div class="alarm-info">
         <span class="alarm-hora">{{ alarme.hora }}</span>
         <span class="alarm-nome">{{ alarme.nome }}</span>
         <span class="alarm-dias">{{ diasFormatados(alarme.dias) }}</span>
       </div>
+
       <div class="alarm-actions">
+
         <ion-toggle
+          class="alarm-toggle"
           [checked]="alarme.ativo"
-          (ionChange)="alternarAtivo(alarme)"
+          (click)="$event.stopPropagation()"
+          (ionChange)="alternarAtivo(alarme); $event.stopPropagation()"
           color="primary">
         </ion-toggle>
-        <ion-button fill="clear" class="btn-deletar" (click)="deletarAlarme(alarme)">
+
+        <ion-button fill="clear" class="btn-deletar"
+          (click)="deletarAlarme(alarme); $event.stopPropagation()">
           <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
         </ion-button>
+
       </div>
+
     </div>
 
   </div>
 
-  <!-- BOTÃO NOVO ALARME -->
+  <!-- BOTÃO FLUTUANTE -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="novoAlarme()">
       <ion-icon name="add"></ion-icon>
@@ -72,19 +87,18 @@
 
 </ion-content>
 
+<!-- FOOTER -->
 <ion-footer>
   <ion-tab-bar slot="bottom">
 
-    <ion-tab-button tab="sleep">
-      <ion-icon name="moon-outline"></ion-icon>
-    </ion-tab-button>
-
     <ion-tab-button routerLink="/home" class="active-item">
       <ion-icon name="alarm"></ion-icon>
+      <ion-label>Alarmes</ion-label>
     </ion-tab-button>
 
     <ion-tab-button routerLink="/configuracoes">
       <ion-icon name="settings-outline"></ion-icon>
+      <ion-label>Configurações</ion-label>
     </ion-tab-button>
 
   </ion-tab-bar>

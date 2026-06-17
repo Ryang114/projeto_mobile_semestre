@@ -1,20 +1,4 @@
-ion-content {
-  --background: transparent;
-  position: relative;
-
-  &::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)),
-                var(--ion-background-image) center / cover no-repeat fixed;
-    z-index: -1;
-    pointer-events: none;
-  }
-}
+/* Background/overlay moved to global.scss so other pages reuse it */
 
 // ─── FILTRO ───────────────────────────────────────────────
 ion-card.filtro {
@@ -50,15 +34,46 @@ ion-button {
 
 .btn-conta {
   --background: transparent;
-  border: none;
-  box-shadow: none;
+  --border: none;
+  --box-shadow: none;
+  border: none !important;
+  box-shadow: none !important;
   font-size: 32px;
+  margin-right: 8px;
+  width: 70px;
+  height: 70px;
+  min-width: 70px;
+  min-height: 70px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.2s ease;
 
   ion-icon {
-    font-size: 32px;
-    color: rgba(255, 255, 255, 0.7);
+    font-size: 60px;
+    color: rgba(255, 255, 255, 0.72);
     margin: 0;
   }
+}
+
+.btn-deletar {
+  width: 50px;
+  height: 50%;
+
+}
+
+.btn-conta.logado {
+  --background: transparent;
+
+  ion-icon {
+    color: #3880ff;
+  }
+}
+
+.btn-ordenar {
+  min-width: 150px;
+  justify-content: center;
 }
 
 ion-popover {
@@ -106,74 +121,7 @@ ion-popover {
   }
 }
 
-// ─── CARDS DE ALARME ──────────────────────────────────────
-.alarmes-container {
-  margin-top: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.alarm-card {
-  background: #1a1a1a;
-  border: 0.5px solid #333333;
-  border-radius: 10px;
-  box-shadow: 4px 4px 7px 0px #00000040;
-  padding: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  .alarm-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-
-    .alarm-hora {
-      color: white;
-      font-size: 32px;
-      font-weight: 800;
-      line-height: 1;
-    }
-
-    .alarm-nome {
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 14px;
-      margin-top: 4px;
-    }
-
-    .alarm-dias {
-      color: #3880ff;
-      font-size: 12px;
-      font-weight: 600;
-    }
-  }
-
-  .alarm-actions {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .btn-deletar {
-    --background: transparent;
-    --color: rgba(255, 255, 255, 0.3);
-    border: none;
-    box-shadow: none;
-    height: 32px;
-
-    ion-icon {
-      font-size: 18px;
-      color: rgba(255, 80, 80, 0.6);
-      margin: 0;
-    }
-
-    &:active ion-icon {
-      color: #ff4d4d;
-    }
-  }
-}
+// CARDS DE ALARME moved to global styles (src/global.scss) so other pages can reuse them
 
 // ─── FAB ──────────────────────────────────────────────────
 ion-fab {
@@ -185,16 +133,22 @@ ion-footer {
   --background: var(--ion-background-color);
 
   ion-tab-bar {
-    --background: var(--ion-background-color);
-    --border: none;
-    height: 65px;
+  display: flex;
+  justify-content: center;
+  gap: 70px;
   }
 
-  .active-item ion-icon {
-    background-color: #3880ff;
-    color: white;
-    border-radius: 50%;
-    padding: 10px;
-    font-size: 28px;
-  }
+  .active-item {
+      ion-icon {
+        color: #3880ff !important;
+        font-size: 36px !important;
+        background: none !important;
+        padding: 0 !important;
+        transition: transform 0.2s ease;
+      }
+    }
+}
+
+ion-tab-button ion-icon {
+  font-size: 30px;
 }

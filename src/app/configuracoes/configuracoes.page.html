@@ -9,15 +9,13 @@
     <ion-label>Conta</ion-label>
   </ion-item>
 
-  <ion-item class="buttom-alarme" button routerLink="/alarme">
-    <ion-icon slot="start" name="time-outline"></ion-icon>
-    <ion-label>Alarme</ion-label>
-  </ion-item>
-
   <ion-item class="buttom-sobre" button routerLink="/sobre-nos">
   <ion-icon slot="start" name="information-circle-outline"></ion-icon>
   <ion-label>Sobre nós</ion-label>
 </ion-item>
+
+  <!-- Debug Logs removido para evitar exposição a usuários não autorizados -->
+  <!-- Se precisar manter para desenvolvedores, reative com segurança (ex.: *ngIf="isDevMode && userIsAdmin") -->
 
 </ion-list>
 
@@ -26,16 +24,14 @@
 <ion-footer>
   <ion-tab-bar slot="bottom">
 
-    <ion-tab-button tab="sleep">
-      <ion-icon name="moon-outline"></ion-icon>
-    </ion-tab-button>
-
     <ion-tab-button routerLink="/home">
       <ion-icon name="alarm"></ion-icon>
+      <ion-label>Alarmes</ion-label>
     </ion-tab-button>
 
     <ion-tab-button routerLink="/configuracoes" class="active-item">
       <ion-icon name="settings-outline"></ion-icon>
+      <ion-label>Configurações</ion-label>
     </ion-tab-button>
 
   </ion-tab-bar>

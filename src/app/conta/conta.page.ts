@@ -15,8 +15,7 @@ import {
 import { IonContent, IonButton, IonIcon, NavController, AlertController, LoadingController } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { Firestore, doc, getDoc, setDoc, updateDoc, collection, query, where, getDocs, deleteDoc } from '@angular/fire/firestore';
-import { onAuthStateChanged, EmailAuthProvider, reauthenticateWithCredential, updatePassword } from '@angular/fire/auth';
-import { AlarmService } from '../core/alarm.service';
+import { onAuthStateChanged, sendPasswordResetEmail, verifyBeforeUpdateEmail } from '@angular/fire/auth';import { AlarmService } from '../core/alarm.service';
 
 @Component({
   selector: 'app-conta',
@@ -36,10 +35,6 @@ export class ContaPage implements OnInit, OnDestroy {
 
   mostrarSenha = false;
   mostrarConfirmarSenha = false;
-
-  mostrarSenhaAtual = false;
-  mostrarSenhaNova = false;
-  mostrarConfirmarSenhaNova = false;
 
   erroEmail = '';
   erroSenha = '';
@@ -183,66 +178,76 @@ export class ContaPage implements OnInit, OnDestroy {
   }
 
   async salvarNovoEmail() {
+  const user = (this.auth as any).auth?.currentUser;
+
+  if (!user) {
+    await this.exibirAlerta(
+      'Erro',
+      'Nenhum usuário logado.'
+    );
     return;
   }
 
-  async salvarNovaSenha() {
-    const atual = this.senhaAtual?.trim();
-    const nova = this.senhaNova?.trim();
-    const confirmar = this.confirmarSenhaNova?.trim();
-
-    if (!atual || !nova || !confirmar) {
-      this.exibirAlerta('Campos Vazios', 'Por favor, preencha todos os campos de senha.');
-      return;
-    }
-    if (nova !== confirmar) {
-      this.exibirAlerta('Erro de Confirmação', 'A nova senha e a confirmação não são iguais.');
-      return;
-    }
-    if (nova.length < 6) {
-      this.exibirAlerta('Senha muito curta', 'A nova senha deve ter no mínimo 6 caracteres.');
-      return;
-    }
-
-    const loading = await this.loadingCtrl.create({ message: 'Atualizando sua senha...' });
-    await loading.present();
-
-    try {
-      const authInstance = (this.auth as any).auth;
-      const user = authInstance?.currentUser;
-
-      if (!user) throw new Error('Usuário não localizado na sessão.');
-
-      const credential = EmailAuthProvider.credential(user.email!, atual);
-      await reauthenticateWithCredential(user, credential);
-      await updatePassword(user, nova);
-
-      await loading.dismiss();
-
-      this.senhaAtual = '';
-      this.senhaNova = '';
-      this.confirmarSenhaNova = '';
-      this.mostrarSenhaAtual = false;
-      this.mostrarSenhaNova = false;
-      this.mostrarConfirmarSenhaNova = false;
-
-      this.exibirAlerta('Sucesso', 'Sua senha foi atualizada com sucesso!');
-      this.abaAtiva = 'perfil';
-
-    } catch (error: any) {
-      await loading.dismiss();
-      console.error('Erro detalhado ao mudar senha:', error);
-
-      let messageErro = 'Não foi possível atualizar a senha. Tente novamente mais tarde.';
-      if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
-        messageErro = 'A senha atual informada está incorreta.';
-      } else if (error.code === 'auth/requires-recent-login') {
-        messageErro = 'Sua sessão expirou por segurança. Saia do app e faça login novamente.';
-      }
-
-      this.exibirAlerta('Falha na Operação', messageErro);
-    }
+  if (!this.emailNovo.trim()) {
+    await this.exibirAlerta(
+      'Erro',
+      'Digite o novo e-mail.'
+    );
+    return;
   }
+
+  try {
+    await verifyBeforeUpdateEmail(
+      user,
+      this.emailNovo.trim()
+    );
+
+    await this.exibirAlerta(
+      'E-mail enviado',
+      'Foi enviado um link de confirmação para o novo e-mail. Após confirmar, sua conta será atualizada.'
+    );
+
+  } catch (error: any) {
+    console.error(error);
+
+    await this.exibirAlerta(
+      'Erro',
+      'Não foi possível enviar o e-mail de confirmação.'
+    );
+  }
+}
+
+  async salvarNovaSenha() {
+  const authInstance = (this.auth as any).auth;
+
+  if (!this.emailDoUsuario) {
+    await this.exibirAlerta(
+      'Erro',
+      'Nenhum usuário logado.'
+    );
+    return;
+  }
+
+  try {
+    await sendPasswordResetEmail(
+      authInstance,
+      this.emailDoUsuario
+    );
+
+    await this.exibirAlerta(
+      'E-mail enviado',
+      'Foi enviado um link para redefinir sua senha. Verifique sua caixa de entrada.'
+    );
+
+  } catch (error: any) {
+    console.error(error);
+
+    await this.exibirAlerta(
+      'Erro',
+      'Não foi possível enviar o e-mail de redefinição.'
+    );
+  }
+}
 
   async exibirAlerta(titulo: string, mensagem: string) {
     const alert = await this.alertCtrl.create({
@@ -343,9 +348,6 @@ export class ContaPage implements OnInit, OnDestroy {
   alternarVisibilidadeSenha(tipo: string) {
     if (tipo === 'senha') this.mostrarSenha = !this.mostrarSenha;
     else if (tipo === 'confirmar') this.mostrarConfirmarSenha = !this.mostrarConfirmarSenha;
-    else if (tipo === 'senhaAtual') this.mostrarSenhaAtual = !this.mostrarSenhaAtual;
-    else if (tipo === 'senhaNova') this.mostrarSenhaNova = !this.mostrarSenhaNova;
-    else if (tipo === 'confirmarSenhaNova') this.mostrarConfirmarSenhaNova = !this.mostrarConfirmarSenhaNova;
   }
 
   async entrar() {

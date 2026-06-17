@@ -22,6 +22,8 @@ export class NotificationService {
 
     const notificacoes: ScheduleOptions['notifications'] = [];
 
+    const soundForNotification = (alarme.som && !alarme.som.startsWith('data:')) ? alarme.som : 'beep.wav';
+
     if (diasSemana.length === 0) {
       // Dispara uma única vez no próximo horário
       const agora = new Date();
@@ -29,18 +31,21 @@ export class NotificationService {
       alvo.setHours(hora, minuto, 0, 0);
       if (alvo <= agora) alvo.setDate(alvo.getDate() + 1);
 
-      notificacoes.push({
+        notificacoes.push({
         id: this.gerarId(alarme.id!, 0),
         title: alarme.nome,
         body: `Alarme: ${alarme.hora}`,
         schedule: { at: alvo, allowWhileIdle: true },
-        sound: 'beep.wav',
+          sound: soundForNotification,
+        channelId: 'alarm-channel',
+        ongoing: true,
+        autoCancel: false,
         extra: { alarmeId: alarme.id }
       });
 
     } else {
       // Agenda para cada dia da semana selecionado
-      for (const dia of diasSemana) {
+        for (const dia of diasSemana) {
         notificacoes.push({
           id: this.gerarId(alarme.id!, dia),
           title: alarme.nome,
@@ -49,7 +54,10 @@ export class NotificationService {
             on: { weekday: dia, hour: hora, minute: minuto },
             allowWhileIdle: true
           },
-          sound: 'beep.wav',
+            sound: soundForNotification,
+          channelId: 'alarm-channel',
+          ongoing: true,
+          autoCancel: false,
           extra: { alarmeId: alarme.id }
         });
       }

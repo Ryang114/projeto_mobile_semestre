@@ -11,7 +11,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "copy-sounds": "node ./scripts/copy-sounds.js",
-    "generate-beep": "node ./scripts/generate-beep.js"
+    "generate-beep": "node ./scripts/generate-beep.js",
+    "generate-ring1": "node ./scripts/generate-tone.js ring1.wav 800",
+    "generate-ring2": "node ./scripts/generate-tone.js ring2.wav 1200"
   },
   "private": true,
   "dependencies": {

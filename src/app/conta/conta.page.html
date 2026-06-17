@@ -42,69 +42,39 @@
 
   <div class="auth-container dynamic-profile" *ngIf="emailDoUsuario && abaAtiva === 'email'">
 
-    <h2 class="main-title">Alterar E-mail</h2>
+  <h2 class="main-title">Alterar E-mail</h2>
 
-    <div style="background-color: #ffebee; border: 2px solid #ef5350; padding: 15px; margin: 15px 0; border-radius: 8px; text-align: center;">
-      <p style="color: #c62828; font-weight: bold; font-size: 1.1em; margin: 0;">
-       A opção de alterar o e-mail está temporariamente desativada.
-      </p>
-    </div>
-
-    <div class="profile-input-box">
-      <label class="input-label">E-mail atual</label>
-      <input type="email" [(ngModel)]="emailAtual" placeholder="E-mail atual" disabled>
-    </div>
-
-    <div class="profile-input-box">
-      <label class="input-label">Senha atual</label>
-      <input type="password" [(ngModel)]="senhaAtualEmail" placeholder="Senha atual" disabled>
-    </div>
-
-    <div class="profile-input-box">
-      <label class="input-label">E-mail novo</label>
-      <input type="email" [(ngModel)]="emailNovo" placeholder="E-mail novo" disabled>
-    </div>
-
-    <button class="btn-save-profile" (click)="salvarNovoEmail()" disabled style="cursor: not-allowed; opacity: 0.6;">
-      Salvar
-    </button>
-
+  <div class="profile-input-box">
+    <label class="input-label">Novo e-mail</label>
+    <input
+      type="email"
+      [(ngModel)]="emailNovo"
+      placeholder="Novo e-mail">
   </div>
+
+  <button
+    class="btn-save-profile"
+    (click)="salvarNovoEmail()">
+    Enviar confirmação
+  </button>
+
+</div>
 
   <div class="auth-container dynamic-profile" *ngIf="emailDoUsuario && abaAtiva === 'senha'">
 
-    <h2 class="main-title">Alterar senha</h2>
+  <h2 class="main-title">Alterar senha</h2>
 
-    <div class="profile-input-box" style="position: relative;">
-      <label class="input-label">Senha atual</label>
-      <input [type]="mostrarSenhaAtual ? 'text' : 'password'" [(ngModel)]="senhaAtual" placeholder="Senha atual" style="padding-right: 40px;">
-      <ion-icon class="eye-icon" style="position: absolute; right: 10px; bottom: 12px; cursor: pointer; font-size: 20px;"
-        [name]="mostrarSenhaAtual ? 'eye-off-outline' : 'eye-outline'"
-        (click)="alternarVisibilidadeSenha('senhaAtual')">
-      </ion-icon>
-    </div>
+  <p style="text-align:center; margin:20px 0;">
+    Um e-mail será enviado para sua conta para que você possa redefinir sua senha.
+  </p>
 
-    <div class="profile-input-box" style="position: relative;">
-      <label class="input-label">Senha nova</label>
-      <input [type]="mostrarSenhaNova ? 'text' : 'password'" [(ngModel)]="senhaNova" placeholder="Senha nova" style="padding-right: 40px;">
-      <ion-icon class="eye-icon" style="position: absolute; right: 10px; bottom: 12px; cursor: pointer; font-size: 20px;"
-        [name]="mostrarSenhaNova ? 'eye-off-outline' : 'eye-outline'"
-        (click)="alternarVisibilidadeSenha('senhaNova')">
-      </ion-icon>
-    </div>
+  <button
+    class="btn-save-profile"
+    (click)="salvarNovaSenha()">
+    Enviar e-mail
+  </button>
 
-    <div class="profile-input-box" style="position: relative;">
-      <label class="input-label">Confirmar senha nova</label>
-      <input [type]="mostrarConfirmarSenhaNova ? 'text' : 'password'" [(ngModel)]="confirmarSenhaNova" placeholder="Confirmar senha nova" style="padding-right: 40px;">
-      <ion-icon class="eye-icon" style="position: absolute; right: 10px; bottom: 12px; cursor: pointer; font-size: 20px;"
-        [name]="mostrarConfirmarSenhaNova ? 'eye-off-outline' : 'eye-outline'"
-        (click)="alternarVisibilidadeSenha('confirmarSenhaNova')">
-      </ion-icon>
-    </div>
-
-    <button class="btn-save-profile" (click)="salvarNovaSenha()">Salvar</button>
-
-  </div>
+</div>
 
   <div class="auth-container" *ngIf="!emailDoUsuario">
 

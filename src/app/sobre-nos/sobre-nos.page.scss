@@ -17,55 +17,53 @@ ion-content {
     }
 }
 
-// 2. CORREÇÃO DO HEADER (SUMIR BARRA PRETA)
-ion-header.ion-no-border {
-    background: transparent;
-    padding-top: 40px;
-
-    ion-toolbar {
-        --background: transparent;
-        --border-width: 0;
-        --border-style: none;
-        --opacity: 0; // Garante que qualquer overlay do Ionic suma
-        box-shadow: none;
-        border: none;
-    }
-}
-
-// 3. CENTRALIZAÇÃO REAL DO TÍTULO
-ion-title {
-    padding-top: 20px;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    display: block;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-weight: 800;
-    font-size: 24px;
-    --color: var(--ion-primary-color);
-    pointer-events: none; // Permite clicar no botão de voltar que está "atrás"
-    z-index: 11;
-}
-
-// Garante que o botão de voltar fique clicável e visível
-ion-buttons {
+.header-navigation {
     position: relative;
-    z-index: 10;
+    padding: 20px 22px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px;
+
+    .btn-back-arrow {
+        position: absolute;
+        left: 12px;
+        --background: transparent;
+        --box-shadow: none;
+        --border: none;
+        --color: #ffffff;
+        --padding-start: 0;
+        --padding-end: 0;
+        margin: 0;
+        transform: scale(1.3);
+        border: none;
+        box-shadow: none;
+        height: auto;
+        width: auto;
+
+        ion-icon {
+            font-size: 24px;
+        }
+    }
+
+    .page-title {
+        color: white;
+        margin: 0;
+        font-size: 20px;
+        font-weight: 800;
+        text-align: center;
+    }
 }
 
 // 4. ESTILO DOS CARDS (DESENVOLVEDORES)
 .content-container {
-    padding: 10px;
-    margin-top: 30px;
+    padding: 8px 10px 24px;
+    margin-top: 0;
 }
 
 .dev-card {
-    --background: rgba(255, 255, 255, 0.05);
+    --background: #2d3650;
+    background: #2d3650 !important;
     border: 1px solid #333;
     border-radius: 12px;
     margin: 10px auto;
@@ -75,11 +73,11 @@ ion-buttons {
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
     max-width: 160px;
     cursor: pointer;
-    padding-bottom: 30px;
+    padding-bottom: 0;
 
     .image-placeholder {
         height: 180px;
-        background: rgba(255, 255, 255, 0.1);
+        background: #2d3650;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -93,13 +91,17 @@ ion-buttons {
     }
 
     .name-bar {
-        background-color: #1a1a1a;
+        background-color: #2d3650;
         color: white;
         text-align: center;
         font-size: 13px;
         font-weight: 600;
         padding: 12px 5px;
         border-top: 1px solid #333;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 
